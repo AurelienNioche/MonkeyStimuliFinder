@@ -1,9 +1,16 @@
 import itertools as it
+import os
 
 import numpy as np
 
+import xlsxwriter
+
 
 class StimuliFinder:
+
+    XLS_COL = ["left_p", "left_x", "right_p", "right_x"]
+    XLS_NAME = "stimuli.xlsx"
+    XLS_FOLDER = "data"
 
     GAUGE_MAX = 6
     X_MAX = 3
@@ -64,6 +71,23 @@ class StimuliFinder:
                 "with_losses": self.incongruent_negative
             }
         }
+
+        self.workbook, self.worksheet = self._create_xls()
+        self.xls_row = 1
+
+    @classmethod
+    def _create_xls(cls):
+
+        # Create a workbook and add a worksheet.
+        os.makedirs(cls.XLS_FOLDER, exist_ok=True)
+        workbook = xlsxwriter.Workbook(os.path.join(cls.XLS_FOLDER,
+                                                    cls.XLS_NAME))
+        worksheet = workbook.add_worksheet()
+
+        for col_idx, title in enumerate(cls.XLS_COL):
+            worksheet.write(0, col_idx, title)
+
+        return workbook, worksheet
 
     def find(self):
 
@@ -241,6 +265,13 @@ class StimuliFinder:
 
         return stimuli_parameters
 
+    def _write(self, **kwargs):
+
+        for k, v in kwargs.items():
+            self.worksheet.write(self.xls_row, self.XLS_COL.index(k), v)
+
+        self.xls_row += 1
+
     def all(self):
 
         idx = 0
@@ -251,6 +282,7 @@ class StimuliFinder:
 
         for i, j in list(it.product(self.P, x0)):
             print(f"[{idx}] p0 = ({i}, {i}); x0 = {j}")
+            self._write(left_p=i, right_p=i, left_x=j[0], right_x=j[1])
             idx += 1
 
         print("p fixed; x0 negative.")
@@ -258,6 +290,7 @@ class StimuliFinder:
 
         for i, j in list(it.product(self.P, x0)):
             print(f"[{idx}] p0 = ({i}, {i}); x0 = {j}")
+            self._write(left_p=i, right_p=i, left_x=j[0], right_x=j[1])
             idx += 1
 
         print("p fixed; x0 negative vs positive.")
@@ -266,6 +299,7 @@ class StimuliFinder:
 
         for i, j in list(it.product(self.P, x0)):
             print(f"[{idx}] p0 = ({i}, {i}); x0 = {j}")
+            self._write(left_p=i, right_p=i, left_x=j[0], right_x=j[1])
             idx += 1
 
         print("x fixed; x0 positive.")
@@ -274,12 +308,14 @@ class StimuliFinder:
 
         for i, j in list(it.product(p, self.X_POS)):
             print(f"[{idx}] p0 = {i}; x0 = ({j}, {j})")
+            self._write(left_p=i[0], right_p=i[1], left_x=j, right_x=j)
             idx += 1
 
         print("x fixed; x0 negative.")
 
         for i, j in list(it.product(p, self.X_NEG)):
             print(f"[{idx}] p0 = {i}; x0 = ({j}, {j})")
+            self._write(left_p=i[0], right_p=i[1], left_x=j, right_x=j)
             idx += 1
 
         print("congruent positive.")
@@ -288,6 +324,7 @@ class StimuliFinder:
 
         for i, j in list(it.product(p, x0)):
             print(f"[{idx}] p0 = {i}; x0 = {j}")
+            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1])
             idx += 1
 
         print("congruent negative.")
@@ -296,6 +333,7 @@ class StimuliFinder:
 
         for i, j in list(it.product(p, x0)):
             print(f"[{idx}] p0 = {i}; x0 = {j}")
+            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1])
             idx += 1
 
         print("incongruent positive.")
@@ -304,6 +342,7 @@ class StimuliFinder:
 
         for i, j in list(it.product(p, x0)):
             print(f"[{idx}] p0 = {i}; x0 = {j}")
+            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1])
             idx += 1
 
         print("incongruent negative.")
@@ -312,7 +351,10 @@ class StimuliFinder:
 
         for i, j in list(it.product(p, x0)):
             print(f"[{idx}] p0 = {i}; x0 = {j}")
+            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1])
             idx += 1
+
+        self.workbook.close()
 
 
 def main():
