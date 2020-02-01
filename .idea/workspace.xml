@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="27729808-97bd-4aa6-b3ff-b65d708a0627" name="Default Changelist" comment="" />
+    <list default="true" id="27729808-97bd-4aa6-b3ff-b65d708a0627" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1XClbCIJLBLQGA2K6xKXlqVovPn" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -57,36 +64,61 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580558026102</updated>
-      <workItem from="1580558027710" duration="2879000" />
+      <workItem from="1580558027710" duration="2992000" />
+      <workItem from="1580567888031" duration="1703000" />
     </task>
+    <task id="LOCAL-00001" summary="update">
+      <created>1580569575484</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1580569575484</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
+  </component>
   <component name="WindowStateProjectService">
-    <state width="1587" height="281" key="GridCell.Tab.0.bottom" timestamp="1580567573059">
+    <state x="387" y="93" key="CommitChangelistDialog2" timestamp="1580569575345">
+      <screen x="0" y="23" width="1680" height="977" />
+    </state>
+    <state x="387" y="93" key="CommitChangelistDialog2/0.23.1680.977@0.23.1680.977" timestamp="1580569575345" />
+    <state width="1587" height="281" key="GridCell.Tab.0.bottom" timestamp="1580569441427">
       <screen x="0" y="23" width="1680" height="977" />
     </state>
     <state width="1587" height="331" key="GridCell.Tab.0.bottom/0.23.1680.976@0.23.1680.976" timestamp="1580565749498" />
-    <state width="1587" height="281" key="GridCell.Tab.0.bottom/0.23.1680.977@0.23.1680.977" timestamp="1580567573059" />
-    <state width="1587" height="281" key="GridCell.Tab.0.center" timestamp="1580567573059">
+    <state width="1587" height="281" key="GridCell.Tab.0.bottom/0.23.1680.977@0.23.1680.977" timestamp="1580569441427" />
+    <state width="1587" height="281" key="GridCell.Tab.0.center" timestamp="1580569441426">
       <screen x="0" y="23" width="1680" height="977" />
     </state>
     <state width="1587" height="331" key="GridCell.Tab.0.center/0.23.1680.976@0.23.1680.976" timestamp="1580565749497" />
-    <state width="1587" height="281" key="GridCell.Tab.0.center/0.23.1680.977@0.23.1680.977" timestamp="1580567573059" />
-    <state width="1587" height="281" key="GridCell.Tab.0.left" timestamp="1580567573058">
+    <state width="1587" height="281" key="GridCell.Tab.0.center/0.23.1680.977@0.23.1680.977" timestamp="1580569441426" />
+    <state width="1587" height="281" key="GridCell.Tab.0.left" timestamp="1580569441426">
       <screen x="0" y="23" width="1680" height="977" />
     </state>
     <state width="1587" height="331" key="GridCell.Tab.0.left/0.23.1680.976@0.23.1680.976" timestamp="1580565749497" />
-    <state width="1587" height="281" key="GridCell.Tab.0.left/0.23.1680.977@0.23.1680.977" timestamp="1580567573058" />
-    <state width="1587" height="281" key="GridCell.Tab.0.right" timestamp="1580567573059">
+    <state width="1587" height="281" key="GridCell.Tab.0.left/0.23.1680.977@0.23.1680.977" timestamp="1580569441426" />
+    <state width="1587" height="281" key="GridCell.Tab.0.right" timestamp="1580569441427">
       <screen x="0" y="23" width="1680" height="977" />
     </state>
     <state width="1587" height="331" key="GridCell.Tab.0.right/0.23.1680.976@0.23.1680.976" timestamp="1580565749498" />
-    <state width="1587" height="281" key="GridCell.Tab.0.right/0.23.1680.977@0.23.1680.977" timestamp="1580567573059" />
+    <state width="1587" height="281" key="GridCell.Tab.0.right/0.23.1680.977@0.23.1680.977" timestamp="1580569441427" />
+    <state x="424" y="230" key="Vcs.Push.Dialog.v2" timestamp="1580569576748">
+      <screen x="0" y="23" width="1680" height="977" />
+    </state>
+    <state x="424" y="230" key="Vcs.Push.Dialog.v2/0.23.1680.977@0.23.1680.977" timestamp="1580569576748" />
+    <state x="489" y="227" width="670" height="676" key="search.everywhere.popup" timestamp="1580569588847">
+      <screen x="0" y="23" width="1680" height="977" />
+    </state>
+    <state x="489" y="227" width="670" height="676" key="search.everywhere.popup/0.23.1680.977@0.23.1680.977" timestamp="1580569588847" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/MonkeyStimuliFinder$stimuli_finder.coverage" NAME="stimuli_finder Coverage Results" MODIFIED="1580567573049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MonkeyStimuliFinder$stimuli_finder.coverage" NAME="stimuli_finder Coverage Results" MODIFIED="1580569441419" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
