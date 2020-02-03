@@ -8,7 +8,6 @@ import xlsxwriter
 
 class StimuliFinder:
 
-    XLS_COL = ["left_p", "left_x", "right_p", "right_x"]
     XLS_NAME = "stimuli.xlsx"
     XLS_FOLDER = "data"
 
@@ -23,17 +22,17 @@ class StimuliFinder:
 
     def __init__(self,
                  prop_cont=0.5,
-                 prop_cont_with_loss=0.5,
+                 prop_with_losses=0.5,
                  prop_cont_with_loss_each_cond=(0.6, 0.3, 0.1),
                  prop_incongruent=0.5,
                  ):
 
         """
-        :param prop_cont: int range 0-1.
+        :param prop_cont: float range 0-1.
             Probability of a control trial (i.e. trial with a dominant option)
-        :param prop_cont_with_loss: int range 0-1.
-            Probability that a control trial is inculdes losses
-        :param prop_incongruent: int range 0-1.
+        :param prop_with_losses: float range 0-1.
+            Probability that a trial is inculdes losses
+        :param prop_incongruent: float range 0-1.
             Probability for a trial (if not control) to be incongruent
             (i.e. p1 > p2 <=> x2 < x1)
         """
@@ -41,7 +40,7 @@ class StimuliFinder:
         # Container for proportion of every type of trial
         self.proportion = {
             "control_trials": prop_cont,
-            "with_losses": prop_cont_with_loss,
+            "with_losses": prop_with_losses,
             "incongruent": prop_incongruent,
             "with_loss_per_cond": prop_cont_with_loss_each_cond
         }
@@ -73,7 +72,7 @@ class StimuliFinder:
         }
 
         self.workbook, self.worksheet = self._create_xls()
-        self.xls_row = 1
+        self.xls_row = 0
 
     @classmethod
     def _create_xls(cls):
@@ -83,9 +82,6 @@ class StimuliFinder:
         workbook = xlsxwriter.Workbook(os.path.join(cls.XLS_FOLDER,
                                                     cls.XLS_NAME))
         worksheet = workbook.add_worksheet()
-
-        for col_idx, title in enumerate(cls.XLS_COL):
-            worksheet.write(0, col_idx, title)
 
         return workbook, worksheet
 
@@ -265,94 +261,141 @@ class StimuliFinder:
 
         return stimuli_parameters
 
-    def _write(self, **kwargs):
+    def _write(self, left_p, right_p, left_x, right_x, lottery_type,
+               comment):
 
-        for k, v in kwargs.items():
-            self.worksheet.write(self.xls_row, self.XLS_COL.index(k), v)
+        col_value = [
+            ('left_p', left_p),
+            ('left_x0', left_x),
+            ('right_p', right_p),
+            ('right_x0', right_x),
+            ('lottery_type', lottery_type),
+            ('comment', comment),
+        ]
 
+        col = [i[0] for i in col_value]
+
+        if self.xls_row == 0:
+            for col_idx, title in enumerate(col):
+                self.worksheet.write(0, col_idx, title)
+
+            self.xls_row += 1
+
+        for i, (k, v) in enumerate(col_value):
+            self.worksheet.write(self.xls_row, i, v)
+
+        print(f"[{self.xls_row}] p0 = ({left_p}, {right_p}); "
+              f"x0 = ({left_x}, {right_x}), type={lottery_type}")
         self.xls_row += 1
 
-    def all(self):
+    def _type_1(self):
 
-        idx = 0
-
-        print("p fixed; x0 positive.")
-
-        x0 = list(it.combinations(self.X_POS, 2))
-
-        for i, j in list(it.product(self.P, x0)):
-            print(f"[{idx}] p0 = ({i}, {i}); x0 = {j}")
-            self._write(left_p=i, right_p=i, left_x=j[0], right_x=j[1])
-            idx += 1
-
-        print("p fixed; x0 negative.")
-        x0 = list(it.combinations(self.X_NEG, 2))
-
-        for i, j in list(it.product(self.P, x0)):
-            print(f"[{idx}] p0 = ({i}, {i}); x0 = {j}")
-            self._write(left_p=i, right_p=i, left_x=j[0], right_x=j[1])
-            idx += 1
-
-        print("p fixed; x0 negative vs positive.")
+        comment = "CONTROL; p fixed / x varies, x0 negative vs positive"
+        print(comment)
 
         x0 = list(it.product(self.X_NEG, self.X_POS))
 
         for i, j in list(it.product(self.P, x0)):
-            print(f"[{idx}] p0 = ({i}, {i}); x0 = {j}")
-            self._write(left_p=i, right_p=i, left_x=j[0], right_x=j[1])
-            idx += 1
+            self._write(left_p=i, right_p=i, left_x=j[0], right_x=j[1],
+                        lottery_type=1, comment=comment)
 
-        print("x fixed; x0 positive.")
+    def _type_2(self):
+
+        comment = "CONTROL; p fixed / x varies; x0 positive"
+        print(comment)
+
+        x0 = list(it.combinations(self.X_POS, 2))
+
+        for i, j in list(it.product(self.P, x0)):
+            self._write(left_p=i, right_p=i, left_x=j[0], right_x=j[1],
+                        lottery_type=2,
+                        comment=comment)
+
+    def _type_3(self):
+
+        comment = "CONTROL; p fixed / x varies; x0 negative"
+        print(comment)
+
+        x0 = list(it.combinations(self.X_NEG, 2))
+
+        for i, j in list(it.product(self.P, x0)):
+            self._write(left_p=i, right_p=i, left_x=j[0], right_x=j[1],
+                        lottery_type=3, comment=comment)
+
+    def _type_4(self):
+
+        comment = "CONTROL; p varies / x fixed; x0 positive"
+        print(comment)
 
         p = list(it.combinations(self.P, 2))
 
         for i, j in list(it.product(p, self.X_POS)):
-            print(f"[{idx}] p0 = {i}; x0 = ({j}, {j})")
-            self._write(left_p=i[0], right_p=i[1], left_x=j, right_x=j)
-            idx += 1
+            self._write(left_p=i[0], right_p=i[1], left_x=j, right_x=j,
+                        lottery_type=4, comment=comment)
 
-        print("x fixed; x0 negative.")
+    def _type_5(self):
+
+        comment = "CONTROL; p varies / x fixed; x0 negative"
+        print(comment)
+
+        p = list(it.combinations(self.P, 2))
 
         for i, j in list(it.product(p, self.X_NEG)):
-            print(f"[{idx}] p0 = {i}; x0 = ({j}, {j})")
-            self._write(left_p=i[0], right_p=i[1], left_x=j, right_x=j)
-            idx += 1
+            self._write(left_p=i[0], right_p=i[1], left_x=j, right_x=j,
+                        lottery_type=5, comment=comment)
 
-        print("congruent positive.")
+    def _type_6(self):
 
-        x0 = list(it.combinations(self.X_POS, 2))
-
-        for i, j in list(it.product(p, x0)):
-            print(f"[{idx}] p0 = {i}; x0 = {j}")
-            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1])
-            idx += 1
-
-        print("congruent negative.")
-
-        x0 = list(it.combinations(self.X_NEG[::-1], 2))
-
-        for i, j in list(it.product(p, x0)):
-            print(f"[{idx}] p0 = {i}; x0 = {j}")
-            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1])
-            idx += 1
-
-        print("incongruent positive.")
+        comment = "INCONGRUENT POS; p varies / x varies; x0 positive"
+        print(comment)
 
         x0 = list(it.combinations(self.X_POS[::-1], 2))
+        p = list(it.combinations(self.P, 2))
 
         for i, j in list(it.product(p, x0)):
-            print(f"[{idx}] p0 = {i}; x0 = {j}")
-            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1])
-            idx += 1
+            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1],
+                        lottery_type=6, comment=comment)
 
-        print("incongruent negative.")
+    def _type_7(self):
+
+        comment = "INCONGRUENT NEG; p varies / x varies; x0 negative"
+        print(comment)
 
         x0 = list(it.combinations(self.X_NEG, 2))
+        p = list(it.combinations(self.P, 2))
 
         for i, j in list(it.product(p, x0)):
-            print(f"[{idx}] p0 = {i}; x0 = {j}")
-            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1])
-            idx += 1
+            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1],
+                        lottery_type=7, comment=comment)
+
+    def _type_8(self):
+
+        comment = "CONGRUENT POS; p varies / x varies; x0 positive."
+        print(comment)
+
+        x0 = list(it.combinations(self.X_POS, 2))
+        p = list(it.combinations(self.P, 2))
+
+        for i, j in list(it.product(p, x0)):
+            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1],
+                        lottery_type=8, comment=comment)
+
+    def _type_9(self):
+
+        comment = "CONGRUENT NEG; p varies / x varies; x0 negative"
+        print(comment)
+
+        x0 = list(it.combinations(self.X_NEG[::-1], 2))
+        p = list(it.combinations(self.P, 2))
+
+        for i, j in list(it.product(p, x0)):
+            self._write(left_p=i[0], right_p=i[1], left_x=j[0], right_x=j[1],
+                        lottery_type=9, comment=comment)
+
+    def all(self):
+
+        for i in range(1, 10):
+            getattr(self, f'_type_{i}')()
 
         self.workbook.close()
 
